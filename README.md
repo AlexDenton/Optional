@@ -13,11 +13,11 @@ If you don't/can't use an ORM you are faced with a choice:
 
 1. Eagerly fetching all data regardless of whether you need it
 2. Partially materializing your domain entities
-3. arbitrarily remodeling your domain entities for performance rather than business reasons
+3. Arbitrarily remodeling your domain entities for performance rather than business reasons
 
 For me Option 1 is an impractical answer and Option 3 is a disatisfying one.  It is Option 2 that this project is intended to explore.
 
-The real problem with partially materializing your domain entities is ambiguity.  Someone consuming the entities has no idea whether a value is null because the value is actually null or if the entity simply isn't fully materialized.  This is where Optional comes into play.
+The real problem with partially materializing your domain entities is ambiguity.  Someone consuming the entities has no idea whether a value is null because the value is actually null or if the entity simply isn't fully materialized.  This is where the Optional type comes into play.
 
 ## What is it?
 
@@ -36,7 +36,7 @@ This also has exciting implications for serialization.  When making DTOs to retu
 1. A bunch of little DTOs for each different context
 2. One big DTO with all the properties you could ever want 
 
-Option 1 is okay but mean writing a lot of DTOs and a lot of boilerplate mapping code.  Option 2 is also okay but loses the semantic meaning of your DTOs during serialization.  To elaborate on that let's say you want to serialize a property and it's value is null.  Well, you can either tell the serializer to ignore null values or you can tell it to keep them.  Unfortunately it's all or nothing and you could be losing semantic meaning either way.  Either you're returning data that isn't true (that a value is null when it really isn't), or you lose the ability to tell the client that a value actually is null.
+Option 1 is okay but means writing a lot of DTOs and a lot of boilerplate mapping code.  Option 2 is also okay but loses the semantic meaning of your DTOs during serialization.  To elaborate on that let's say you want to serialize a property and its value is null.  Well, you can either tell the serializer to ignore null values or you can tell it to keep them.  Unfortunately it's all or nothing and you could be losing semantic meaning either way.  Either you're returning data that isn't true (that a value is null when it really isn't), or you lose the ability to tell the client that a value actually is null.
 
 With the Optional type you're able to strike a middle ground.  By making a custom ContractResolver and JsonConverter you're able to ignore a value if it isn't set and show a value if it is (even if it was set to a null value).  There will still be times when it is appropriate to create a new DTO entirely but using Optional gives you the option of not creating a new DTO every time.
 
